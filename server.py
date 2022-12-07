@@ -47,8 +47,19 @@ def api_about():
     return json.dumps(me)
 
 
-# get /api/about
-# return me as json
+# GET /api/catalog
+# returns the catalog as json
+# try it in the browser
+@app.get("/api/catalog")
+def get_catalog():
+    # read form db
+    cursor = db.Products.find({})
+    results = []
+    for prod in cursor:
+        prod["_id"] = str(prod["_id"])
+        results.append(prod)
+
+    return json.dumps(results)
 
 
 
@@ -60,6 +71,7 @@ def api_about():
 # POST /api/catalog
 @app.post("/api/catalog")
 def save_product():
+    product = request.get_json
 
 
 
@@ -84,22 +96,19 @@ def save_product():
         return abort(400, "Price is required")
  
  
-    if not insinstance(product["price"], (float, int) ):
+    if not isinstance(product["price"], (float, int) ):
         return abort(400, "Price must be a valid number")
  
  
     if product["price"] <0:
         return abort(400, "Price must be greather than 0")
     
-    # save product to db
-    db.Products.insert_one(product)
- 
- 
- 
+     # save product to db
+    db.Products.insert_one(product) # save the object, will assign an _id: ObjectId(12368713287613)
+    # fix the _id value
+    product["_id"] = str(product["_id"])
 
- 
- 
- 
+    return json.dumps(product)
  
  
 # GET.api/test/count
@@ -176,7 +185,7 @@ def search_by_id(id):
     if not prod:
         return abort(404, "Product not found")
     
-    prof["_id"] = str(prod["_id"])
+    prod["_id"] = str(prod["_id"])
     return json.dumps(prod)
     
     

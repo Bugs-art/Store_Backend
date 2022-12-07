@@ -1,5 +1,5 @@
 import pymongo
-import certifi
+import certifi 
 
 con_str = "mongodb+srv://FSDICh30:PassFSDICh30@cluster0.mzaem.mongodb.net/?retryWrites=true&w=majority"
 client = pymongo.MongoClient(con_str, tlsCAFile=certifi.where())
