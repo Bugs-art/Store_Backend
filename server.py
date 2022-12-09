@@ -5,6 +5,7 @@ from config import me
 from mock_data import catalog
 from config import db
 from bson import ObjectId
+from flask_cors import CORS
 
 
 
@@ -261,6 +262,8 @@ def coupon_code(code):
  
  
  
+ 
+app.run(debug=True)
  
  
  
